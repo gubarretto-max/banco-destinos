@@ -1,6 +1,7 @@
 import { Link, NavLink, Outlet } from 'react-router-dom';
 import { useAuth } from '../lib/auth';
 
+/** Moldura das páginas internas (só aparece para quem está logado). */
 export default function Layout() {
   const { session, isAdmin, sair } = useAuth();
 
@@ -11,11 +12,8 @@ export default function Layout() {
         <nav>
           <NavLink to="/" end>Destinos</NavLink>
           {isAdmin && <NavLink to="/admin">Cadastro</NavLink>}
-          {session ? (
-            <button className="link" onClick={sair}>Sair</button>
-          ) : (
-            <NavLink to="/login">Entrar</NavLink>
-          )}
+          <span className="suave usuario" title={session?.user.email}>{session?.user.email}</span>
+          <button className="link" onClick={sair}>Sair</button>
         </nav>
       </header>
       <main>

@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './lib/auth';
 import Layout from './components/Layout';
+import RotaPrivada from './components/RotaPrivada';
 import RotaAdmin from './components/RotaAdmin';
 import Inicio from './pages/Inicio';
 import Login from './pages/Login';
@@ -13,9 +14,12 @@ export default function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          <Route element={<Layout />}>
+          {/* única página aberta */}
+          <Route path="login" element={<Login />} />
+
+          {/* todo o resto exige login */}
+          <Route element={<RotaPrivada><Layout /></RotaPrivada>}>
             <Route index element={<Inicio />} />
-            <Route path="login" element={<Login />} />
 
             <Route path="admin" element={<RotaAdmin><AdminPaises /></RotaAdmin>} />
             <Route path="admin/paises/novo" element={<RotaAdmin><PaisForm /></RotaAdmin>} />
@@ -23,9 +27,9 @@ export default function App() {
             <Route path="admin/paises/:paisId/cidades/nova"
                    element={<RotaAdmin><CidadeForm /></RotaAdmin>} />
             <Route path="admin/cidades/:id" element={<RotaAdmin><CidadeForm /></RotaAdmin>} />
-
-            <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
+
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

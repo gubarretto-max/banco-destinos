@@ -22,6 +22,7 @@ Responda sempre em **português do Brasil**. O dono do projeto usa Windows + Pow
 Scripts já aplicados no Supabase, nesta ordem:
 1. `01_schema.sql` — tabelas, índices, triggers, view
 2. `02_storage_rls.sql` — RLS, administradores, bucket `fotos`
+3. `03_leitura_so_logado.sql` — leitura passa a exigir login (troca a política "leitura publica" por "leitura logado")
 
 `reset.sql` apaga tudo (uso só em emergência no início do projeto).
 **Mudanças futuras no banco:** criar um novo arquivo numerado (`03_...sql`), nunca editar os já aplicados.
@@ -44,9 +45,10 @@ Scripts já aplicados no Supabase, nesta ordem:
 `interesse`: 1 = curiosidade … 5 = quero muito ir.
 
 ### Segurança (RLS)
-- Leitura pública (anon) em todas as tabelas de conteúdo.
+- **Site inteiro exige login.** Leitura só para `authenticated` (política "leitura logado").
 - Escrita só para usuários em `administradores` (`is_admin()`).
 - Cadastro público de usuários desativado no Supabase. Login só do dono.
+- Bucket `fotos` continua público (URL direta abre a foto), mas não dá para listar sem login.
 
 ## Fotos
 - Bucket público `fotos`, até 2 MB, só webp/jpeg/png.
@@ -64,18 +66,19 @@ Scripts já aplicados no Supabase, nesta ordem:
 ## Estrutura do front
 - `src/App.tsx` — rotas (react-router-dom)
 - `src/lib/auth.tsx` — `AuthProvider` / `useAuth()` (session, isAdmin via `rpc('is_admin')`, entrar, sair)
-- `src/components/RotaAdmin.tsx` — protege rotas `/admin/*` (exige login + admin)
+- `src/components/RotaPrivada.tsx` — exige login em todas as páginas (sem sessão → `/login`)
+- `src/components/RotaAdmin.tsx` — dentro da área logada, exige admin nas rotas `/admin/*`
 - `src/components/Interesse.tsx` — `InteresseSelo` (exibição) e `InteresseCampo` (seletor 1–5)
 - `src/lib/tipos.ts` — tipos das tabelas + `vazioParaNull`, `numeroOuNull`
 
 ### Rotas
-- `/` — lista pública de países (view `v_paises_resumo`)
-- `/login` — e-mail e senha (Supabase Auth)
+- `/login` — única página aberta; o site sempre abre aqui se não houver sessão
+- `/` — lista de países (view `v_paises_resumo`)
 - `/admin` — lista de países com busca, editar, excluir
 - `/admin/paises/novo`, `/admin/paises/:id` — formulário do país + lista de cidades dele
 - `/admin/paises/:paisId/cidades/nova`, `/admin/cidades/:id` — formulário da cidade
 
 ## Próximos passos planejados
-- Páginas públicas do país e da cidade, com URLs amigáveis (ex.: `/pais/pt`, `/pais/pt/lisboa`)
+- Páginas do país e da cidade, com URLs amigáveis (ex.: `/pais/pt`, `/pais/pt/lisboa`)
 - Cadastro de links, textos e fotos (usar `enviarFoto`) no admin
 - Tags nas cidades
