@@ -61,7 +61,21 @@ Scripts já aplicados no Supabase, nesta ordem:
 - Tema escuro; cor de destaque `#4fc3f7`.
 - Antes de considerar uma mudança pronta: `npm run build` precisa passar sem erros.
 
+## Estrutura do front
+- `src/App.tsx` — rotas (react-router-dom)
+- `src/lib/auth.tsx` — `AuthProvider` / `useAuth()` (session, isAdmin via `rpc('is_admin')`, entrar, sair)
+- `src/components/RotaAdmin.tsx` — protege rotas `/admin/*` (exige login + admin)
+- `src/components/Interesse.tsx` — `InteresseSelo` (exibição) e `InteresseCampo` (seletor 1–5)
+- `src/lib/tipos.ts` — tipos das tabelas + `vazioParaNull`, `numeroOuNull`
+
+### Rotas
+- `/` — lista pública de países (view `v_paises_resumo`)
+- `/login` — e-mail e senha (Supabase Auth)
+- `/admin` — lista de países com busca, editar, excluir
+- `/admin/paises/novo`, `/admin/paises/:id` — formulário do país + lista de cidades dele
+- `/admin/paises/:paisId/cidades/nova`, `/admin/cidades/:id` — formulário da cidade
+
 ## Próximos passos planejados
-- Telas: lista de países → página do país (cidades) → página da cidade (fotos, links, textos)
-- Área de login + cadastro/edição (só admin)
-- Roteamento com URLs amigáveis (ex.: `/pais/pt`, `/pais/pt/lisboa`)
+- Páginas públicas do país e da cidade, com URLs amigáveis (ex.: `/pais/pt`, `/pais/pt/lisboa`)
+- Cadastro de links, textos e fotos (usar `enviarFoto`) no admin
+- Tags nas cidades

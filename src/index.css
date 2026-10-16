@@ -1,10 +1,15 @@
 :root {
   color-scheme: dark;
   --fundo: #0f1419;
+  --superficie: #161d24;
+  --borda: #253039;
   --texto: #e6e9ed;
   --suave: #8b96a3;
   --destaque: #4fc3f7;
+  --destaque-texto: #06222f;
   --erro: #ff7a7a;
+  --ok: #7ad99a;
+  --raio: 8px;
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.5;
 }
@@ -17,16 +22,132 @@ body {
   color: var(--texto);
 }
 
+a { color: var(--destaque); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+h1 { margin: 0 0 16px; font-size: 1.75rem; }
+h2 { margin: 0; font-size: 1.25rem; }
+
+/* ---------- topo ---------- */
+.topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--borda);
+  background: var(--superficie);
+}
+.marca { font-weight: 700; color: var(--texto); }
+.topo nav { display: flex; gap: 16px; align-items: center; }
+.topo nav a { color: var(--suave); }
+.topo nav a.active { color: var(--destaque); }
+
 main {
-  max-width: 720px;
+  max-width: 880px;
   margin: 0 auto;
-  padding: 32px 16px;
+  padding: 24px 16px 64px;
 }
 
-h1 { color: var(--destaque); margin-top: 0; }
-
-ul { list-style: none; padding: 0; }
-li { padding: 8px 0; border-bottom: 1px solid #1f2933; }
-li span { color: var(--suave); }
-
+/* ---------- textos ---------- */
+.suave { color: var(--suave); }
 .erro { color: var(--erro); }
+.ok { color: var(--ok); }
+.resumo { margin: 4px 0 0; color: var(--suave); font-size: 0.9rem; }
+
+/* ---------- cartões e listas ---------- */
+.cartao {
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  padding: 20px;
+  margin-bottom: 24px;
+}
+.estreito { max-width: 380px; margin: 48px auto; }
+
+.cabecalho-pagina {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0 12px;
+}
+.cabecalho-pagina h1 { margin: 0; }
+
+.lista { list-style: none; padding: 0; margin: 0; }
+.lista li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--borda);
+}
+
+.acoes { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+/* ---------- formulários ---------- */
+.formulario { display: flex; flex-direction: column; gap: 14px; }
+.grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+label, .campo { display: flex; flex-direction: column; gap: 6px; font-size: 0.9rem; }
+
+input, select, textarea {
+  font: inherit;
+  color: var(--texto);
+  background: var(--fundo);
+  border: 1px solid var(--borda);
+  border-radius: 6px;
+  padding: 8px 10px;
+  width: 100%;
+}
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid var(--destaque);
+  outline-offset: -1px;
+}
+textarea { resize: vertical; }
+.busca { margin-bottom: 8px; }
+
+/* ---------- botões ---------- */
+.botao {
+  font: inherit;
+  font-size: 0.9rem;
+  display: inline-block;
+  padding: 7px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--borda);
+  background: transparent;
+  color: var(--texto);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.botao:hover { border-color: var(--destaque); text-decoration: none; }
+.botao:disabled { opacity: 0.6; cursor: wait; }
+.botao.primario { background: var(--destaque); border-color: var(--destaque); color: var(--destaque-texto); font-weight: 600; }
+.botao.perigo:hover { border-color: var(--erro); color: var(--erro); }
+.link { font: inherit; background: none; border: none; color: var(--suave); cursor: pointer; padding: 0; }
+.link:hover { color: var(--destaque); }
+
+/* ---------- interesse ---------- */
+.interesse { display: inline-flex; gap: 3px; }
+.ponto { width: 9px; height: 9px; border-radius: 50%; background: var(--borda); }
+.ponto.cheio { background: var(--destaque); }
+
+.interesse-campo { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.ponto-botao {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--borda);
+  background: var(--fundo);
+  color: var(--suave);
+  font: inherit;
+  cursor: pointer;
+}
+.ponto-botao.cheio { background: var(--destaque); border-color: var(--destaque); color: var(--destaque-texto); font-weight: 600; }
+
+@media (max-width: 560px) {
+  .lista li { flex-direction: column; align-items: flex-start; }
+}
